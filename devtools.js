@@ -40,5 +40,7 @@ chrome.devtools.network.onRequestFinished.addListener(
   function(request) {
     const response = request.response;
     const contentHeader = response.headers.find(header=> header.name === 'Content-Type');
-    consoleLog(contentHeader.value);
+    if(contentHeader) {
+      consoleLog(contentHeader.value);
+    }
 });
