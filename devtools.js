@@ -41,8 +41,4 @@ chrome.devtools.network.onRequestFinished.addListener(
     const response = request.response;
     const contentHeader = response.headers.find(header=> header.name === 'Content-Type');
     consoleLog(contentHeader.value);
-
-    if (request.response.bodySize > 3*1024) {
-      consoleLogImage(request.request.url);
-    }
 });
