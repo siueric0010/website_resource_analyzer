@@ -24,6 +24,8 @@
   //       }
   // });
 });*/
+var count = 0;
+var httpsCount = 0;
 function consoleLogImage(message){
   chrome.devtools.inspectedWindow.eval(
       'console.log("Large image: " + unescape("' +
@@ -36,11 +38,29 @@ function consoleLog(message) {
 }
 
 
+// Some bug: google has an extra resource -> why?
 chrome.devtools.network.onRequestFinished.addListener(
   function(request) {
     const response = request.response;
     const contentHeader = response.headers.find(header=> header.name === 'Content-Type');
+    const requestUrl = request.request.url;
     if(contentHeader) {
       consoleLog(contentHeader.value);
     }
+    if(requestUrl.includes('https')) {
+      httpsCount++;
+    }
+    count++;
+    consoleLog("Resource_Count: " + count);
+    consoleLog("Https_Count: " + httpsCount);
+});
+
+// TODO reset count
+chrome.tabs.onCreated.addListener(function(tab) {
+  // This keeps on adding more youtube tabs --> crashes chrome
+  // if(tab.url !== "https://www.youtube.com") {
+  //   chrome.tabs.create({"url": "https://www.youtube.com"}, function(tab) {
+  //   });
+  // }
+  count = 0;
 });
