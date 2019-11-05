@@ -26,6 +26,7 @@
 });*/
 var count = 0;
 var httpsCount = 0;
+var oldUrl = "";
 function consoleLogImage(message){
   chrome.devtools.inspectedWindow.eval(
       'console.log("Large image: " + unescape("' +
@@ -56,11 +57,15 @@ chrome.devtools.network.onRequestFinished.addListener(
 });
 
 // TODO reset count
-chrome.tabs.onCreated.addListener(function(tab) {
+chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
   // This keeps on adding more youtube tabs --> crashes chrome
   // if(tab.url !== "https://www.youtube.com") {
   //   chrome.tabs.create({"url": "https://www.youtube.com"}, function(tab) {
   //   });
   // }
-  count = 0;
+  if(oldUrl !== tab.url) {
+    httpsCount = 0;
+    count = 0;
+    oldUrl = tab.url;
+  }
 });
