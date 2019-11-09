@@ -29,7 +29,7 @@ var httpsCount = 0;
 var oldUrl = "";
 function consoleLogImage(message){
   chrome.devtools.inspectedWindow.eval(
-      'console.log("Large image: " + unescape("' +
+      'console.log("Image: " + unescape("' +
       escape(message) + '"))');
 
 }

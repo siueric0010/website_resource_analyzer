@@ -3,7 +3,14 @@
     "version": "1.0",
     "description": "Uses the network api",
     "devtools_page": "devtools.html",
-    "permissions": ["tabCapture", "tabs"],
+    "permissions": ["tabCapture", "tabs", "declarativeContent"],
+    "background": {
+        "scripts": ["background.js"],
+        "persistent": false
+    },
+    "page_action": {
+        "default_popup": "popup.html"
+    },
     "minimum_chrome_version": "10.0",
     "manifest_version": 2
 }
