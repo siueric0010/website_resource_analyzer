@@ -18,6 +18,14 @@ var rule1 = {
     actions: [new chrome.declarativeContent.ShowPageAction()]
 };
 
+var rule2 = {
+    conditions: [
+     //   new chrome.declarativeContent.webRequest
+    ]
+}
+
+
+
 chrome.webRequest.onBeforeRequest.addListener(function(details) {
     alert('test');
 });
