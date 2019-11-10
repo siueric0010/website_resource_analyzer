@@ -3,10 +3,10 @@
     "version": "1.0",
     "description": "Uses the network api",
     "devtools_page": "devtools.html",
-    "permissions": ["tabCapture", "tabs", "declarativeContent"],
+    "permissions": ["tabCapture", "tabs", "declarativeContent", "webRequest", "*://*"],
     "background": {
         "scripts": ["background.js"],
-        "persistent": false
+        "persistent": true
     },
     "page_action": {
         "default_popup": "popup.html"
