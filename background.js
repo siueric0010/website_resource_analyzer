@@ -18,6 +18,7 @@ var rule1 = {
     actions: [new chrome.declarativeContent.ShowPageAction()]
 };
 
+// TODO: create a rule for getting web requests and acting on it
 var rule2 = {
     conditions: [
      //   new chrome.declarativeContent.webRequest
