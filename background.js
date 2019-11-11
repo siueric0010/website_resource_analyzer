@@ -5,6 +5,10 @@ chrome.runtime.onInstalled.addListener(function() {
     });
 });
 
+
+chrome.webRequest.onCompleted.addListener(function(details) {
+    alert('test');
+});
 // define rule for button to be active
 var rule1 = {
     
@@ -18,15 +22,10 @@ var rule1 = {
     actions: [new chrome.declarativeContent.ShowPageAction()]
 };
 
-// TODO: create a rule for getting web requests and acting on it
-var rule2 = {
-    conditions: [
-     //   new chrome.declarativeContent.webRequest
-    ]
-}
+// // TODO: create a rule for getting web requests and acting on it
+// var rule2 = {
+//     conditions: [
+//      //   new chrome.declarativeContent.webRequest
+//     ]
+// }
 
-
-
-chrome.webRequest.onBeforeRequest.addListener(function(details) {
-    alert('test');
-});
