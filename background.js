@@ -24,9 +24,8 @@ chrome.runtime.onInstalled.addListener(function() {
 
 chrome.webRequest.onCompleted.addListener(function(details) {
     // Works: alert('test', details);
-    let listOfDomains = document.getElementById("listOfDomains");
+    let listOfDomains = document.getElementById("listOfDomains"); // returns null, must fix
     // listOfDomains.textContent += extractDomain(details.url);
-    alert(listOfDomains);
 } , {urls: [ "<all_urls>" ]},[]);
 
 
