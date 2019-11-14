@@ -3,7 +3,7 @@
     "version": "1.0",
     "description": "Uses the network api",
     "devtools_page": "devtools.html",
-    "permissions": ["tabCapture", "tabs", "declarativeContent", "webRequest", "*://*"],
+    "permissions": ["tabCapture", "tabs", "declarativeContent", "webRequest", "<all_urls>", "webRequestBlocking"],
     "background": {
         "scripts": ["background.js"],
         "persistent": true
