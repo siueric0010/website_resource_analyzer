@@ -63,6 +63,9 @@ chrome.webRequest.onBeforeSendHeaders.addListener(function(details) {
         }
       }
       return { requestHeaders: details.requestHeaders };
+
+      // Blocking allows you to return the headers but modified
+      // requestHeaders allows you to get the requestHeaders before they're sent
 } , {urls: [ "<all_urls>" ]},['blocking', 'requestHeaders']);
 
 
