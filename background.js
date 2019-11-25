@@ -32,36 +32,59 @@ chrome.webRequest.onCompleted.addListener(function(details) {
     // Count all the requests and keep track of its domains
     var urlDomain = extractDomain(details.url);
 
+    // Get the https/http 
+    var hasHttps = false;
+    if(details.url.includes("https"))
+        urlDomain = "Https: \n" + urlDomain;
+    else
+        urlDomain = "Http: \n" + urlDomain;
+
     // If the domain is present, do not count it
     if(requestUrls.includes(urlDomain)) return;
+
+
     requestUrls.push(urlDomain);
     domainCounter++;
-    // Works: alert('test', details);
-    //let listOfDomains = document.getElementById("listOfDomains"); // returns null, must fix
-    // listOfDomains.textContent += extractDomain(details.url);
+    
+    // set the array as info so you can communicate with popup.js
     chrome.storage.local.set({'info': requestUrls});
     if(domainCounter != 0) {
         chrome.storage.local.set({'domainCounter': domainCounter});
     }
 } , {urls: [ "<all_urls>" ]},[]);
 
+// before sending headers, change user agent
+
+chrome.webRequest.onBeforeSendHeaders.addListener(function(details) {
+    for (var i = 0; i < details.requestHeaders.length; i++) {
+        if (details.requestHeaders[i].name === 'User-Agent') {
+          // Successfully grabs the user-agent value, now I just need to modify this
+          // alert(details.requestHeaders[i].value);
+        }
+      }
+      return { requestHeaders: details.requestHeaders };
+} , {urls: [ "<all_urls>" ]},['blocking', 'requestHeaders']);
+
+
+
+
+
+// Resets on new tab
 chrome.tabs.onCreated.addListener(function(tabid, changeinfo, tab) {
     requestUrls = [];
     domainCounter = 0;
 });
 
+// Resets on tab update
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
     if(oldUrl !== tab.url) {
+        requestUrls = [];
         domainCounter = 0;
-      oldUrl = tab.url;
+        oldUrl = tab.url;
+        chrome.storage.local.set({'domainCounter': domainCounter});
+        chrome.storage.local.set({'info': requestUrls});
     }
   });
-// // TODO: create a rule for getting web requests and acting on it
-// var rule2 = {
-//     conditions: [
-//      //   new chrome.declarativeContent.webRequest
-//     ]
-// }
 
 // Grabs the domain + subdomains from URL (after the first // and before the first /)
 function extractDomain(url) {
