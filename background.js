@@ -58,8 +58,14 @@ chrome.webRequest.onCompleted.addListener(function(details) {
 chrome.webRequest.onBeforeSendHeaders.addListener(function(details) {
     for (var i = 0; i < details.requestHeaders.length; i++) {
         if (details.requestHeaders[i].name === 'User-Agent') {
-          // Successfully grabs the user-agent value, now I just need to modify this
-          // alert(details.requestHeaders[i].value);
+          
+            // Changes the user agent according to the userAgentString in the popup
+            /*
+            chrome.storage.local.get(['userAgentString'], (result) => {
+                alert(result.userAgentString);
+                details.requestHeaders[i].value = result.userAgentString;
+            });
+            */
         }
       }
       return { requestHeaders: details.requestHeaders };
