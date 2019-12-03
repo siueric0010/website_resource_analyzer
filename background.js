@@ -1,6 +1,14 @@
 var requestUrls = [];
 var domainCounter = 0;
 var oldUrl = "";
+var userAgentDictionary = {
+    "iPhone": "Mozilla/5.0 (iPhone; CPU iPhone OS 12_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1.2 Mobile/15E148 Safari/604.1",
+    "Android": "Mozilla/5.0 (Linux; Android 7.1.2; AFTMM Build/NS6265; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/70.0.3538.110 Mobile Safari/537.36",
+    "Windows": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36",
+    "Linux": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36",
+    "MacOS": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1.1 Safari/605.1.15"
+};
+var userAgent = userAgentDictionary['Windows'];
 
 chrome.runtime.onInstalled.addListener(function() {
 
@@ -14,7 +22,9 @@ chrome.runtime.onInstalled.addListener(function() {
         ],
         actions: [new chrome.declarativeContent.ShowPageAction()]
     };
-
+    
+    var userAgentString = userAgentDictionary["iPhone"];
+    chrome.storage.local.set({'userAgentString': userAgentString}, ()=>{});
 
 
     chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
@@ -58,14 +68,11 @@ chrome.webRequest.onCompleted.addListener(function(details) {
 chrome.webRequest.onBeforeSendHeaders.addListener(function(details) {
     for (var i = 0; i < details.requestHeaders.length; i++) {
         if (details.requestHeaders[i].name === 'User-Agent') {
-          
+            var temp = userAgent;
+
             // Changes the user agent according to the userAgentString in the popup
-            /*
-            chrome.storage.local.get(['userAgentString'], (result) => {
-                alert(result.userAgentString);
-                details.requestHeaders[i].value = result.userAgentString;
-            });
-            */
+            details.requestHeaders[i].value = temp;
+            
         }
       }
       return { requestHeaders: details.requestHeaders };
@@ -93,6 +100,10 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
         chrome.storage.local.set({'domainCounter': domainCounter});
         chrome.storage.local.set({'info': requestUrls});
     }
+    
+    chrome.storage.local.get('userAgentString', (result) => {
+        userAgent = result.userAgentString; //result.userAgentString;
+    });
   });
 
 // Grabs the domain + subdomains from URL (after the first // and before the first /)

@@ -26,12 +26,10 @@ reloadButton.addEventListener("click", function() {
 
 
 // Allow user to choose UA
-/*
-selectUserAgent.addEventListener("click", () =>{
-    var userAgentString = userAgentDictionary[selectUserAgent.value];
-    chrome.storage.local.set(['userAgentString'], userAgentString);
-});
-*/
+selectUserAgent.addEventListener("change", (event) =>{
+    var userAgentString = userAgentDictionary[event.target.value];
+    chrome.storage.local.set({'userAgentString': userAgentString}, ()=>{});
+}, false);
 
 
 
